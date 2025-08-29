@@ -1,44 +1,52 @@
-﻿using CashFlow.Communication.Enums;
+﻿using AutoMapper;
 using CashFlow.Communication.Request;
 using CashFlow.Communication.Responses;
+using CashFlow.Domain.Interfaces.Repositories;
+using CashFlow.Domain.Interfaces.Repositories.Expenses;
+using CashFlow.Domain.Models;
+using CashFlow.Exception.ExceptionBase;
 
 namespace CashFlow.Application.UseCases.Expenses.Register;
 
-public class RegisterExpenseUseCase
+public class RegisterExpenseUseCase : IRegisterExpenseUseCase
 {
-    public ResponseRegisterExpenseJson Execute(RequestRegisterExpenseJson request)
+    private readonly IExpensesRepository _repository;
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IMapper _mapper;
+    public RegisterExpenseUseCase(
+        IExpensesRepository repository, 
+        IUnitOfWork unitOfWork,
+        IMapper autoMapper)
+    {
+        _repository = repository;
+        _unitOfWork = unitOfWork;
+        _mapper = autoMapper;
+    }
+    public async Task<ResponseRegisterExpenseJson> Execute(RequestRegisterExpenseJson request)
     {
         Validate(request);
 
-        return new ResponseRegisterExpenseJson
-        {
+        var entity = _mapper.Map<Expense>(request);
 
-        };
+
+        await _repository.Add(entity);
+        await _unitOfWork.Commit();
+
+        return _mapper.Map<ResponseRegisterExpenseJson>(entity);
+
     }
 
     private void Validate(RequestRegisterExpenseJson request)
     {
-        if (string.IsNullOrWhiteSpace(request.Title))
-        {
-            throw new ArgumentException("Title is required.");
-        }
+        var validator = new RegisterExpenseValidator();
 
-        if (request.Amount <= 0)
-        {
-            throw new ArgumentException("Amount must be greater than zero.");
-        }
+        var result = validator.Validate(request);
 
-        var result = DateTime.Compare(request.Date, DateTime.UtcNow);
-        if (result > 0)
+        if (result.IsValid == false)
         {
-            throw new ArgumentException("Express");      
-        }
+            var errorMessage = result.Errors.Select(f => f.ErrorMessage).ToList();
 
-        var paymentTyoeIsValid = Enum.IsDefined(typeof(PaymentType), request.PaymentType);
-        if (paymentTyoeIsValid == false)
-        {
-            throw new ArgumentException("Payment type is invalid.");
+            throw new ErrorOnValidationException(errorMessage);
         }
-            
     }
 }
