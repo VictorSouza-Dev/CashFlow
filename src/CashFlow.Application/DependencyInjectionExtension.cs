@@ -1,6 +1,6 @@
 ﻿using CashFlow.Application.AutoMapper;
+using CashFlow.Application.UseCases.Expenses.GetAll;
 using CashFlow.Application.UseCases.Expenses.Register;
-using CashFlow.Application.UseCases.GetAll;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CashFlow.Application;

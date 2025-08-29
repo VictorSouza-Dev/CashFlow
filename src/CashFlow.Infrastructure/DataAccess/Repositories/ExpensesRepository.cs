@@ -1,8 +1,8 @@
 ﻿using CashFlow.Domain.Interfaces.Repositories.Expenses;
 using CashFlow.Domain.Models;
-using CashFlow.Infrastructure.DataAccess;
+using Microsoft.EntityFrameworkCore;
 
-namespace CashFlow.Infrastructure.Repositories;
+namespace CashFlow.Infrastructure.DataAccess.Repositories;
 
 internal class ExpensesRepository : IExpensesRepository
 {
@@ -15,8 +15,13 @@ internal class ExpensesRepository : IExpensesRepository
 
     public async Task Add(Expense expense)
     {
-        _dbContext.AddAsync(expense);
+       await _dbContext.Expenses.AddAsync(expense);
 
+    }
+
+    public async Task<List<Expense>> GetAll()
+    {
+        return await _dbContext.Expenses.ToListAsync();
     }
 }
  

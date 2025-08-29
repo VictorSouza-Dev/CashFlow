@@ -11,6 +11,6 @@ internal class UnitOfWork : IUnitOfWork
     }
     public async Task Commit()
     {
-       _dbContext.SaveChangesAsync();
+       await _dbContext.SaveChangesAsync();
     }
 }
