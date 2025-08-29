@@ -11,7 +11,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddMvc(option => option.Filters.Add(typeof(ExceptionFilter)));
 
-builder.Services.AddInfrastructure();
+builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddAplication();
 //DependencyInjectionExtension.AddInfrastructure(builder.Services);
 //builder.Services.AddScoped<IExpensesRepository, ExpensesRepository>();//se eu precisar dessa interface, ela vai em devolver uma instancia da classe a direita
