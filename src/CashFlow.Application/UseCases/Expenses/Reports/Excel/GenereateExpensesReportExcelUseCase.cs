@@ -1,4 +1,6 @@
 ﻿
+using CashFlow.Application.UseCases.Expenses.FilterMonth;
+using CashFlow.Domain.Interfaces.Repositories.Expenses;
 using CashFlow.Domain.Reports;
 using ClosedXML.Excel;
 
@@ -6,8 +8,22 @@ namespace CashFlow.Application.UseCases.Expenses.Reports.Excel;
 
 public class GenereateExpensesReportExcelUseCase : IGenereateExpensesReportExcelUseCase
 {
+    private readonly IFilterExpensesByMonthUseCase _filterUseCase;
+
+    public GenereateExpensesReportExcelUseCase(IFilterExpensesByMonthUseCase filterUseCase)
+    {
+        _filterUseCase = filterUseCase;
+    }
+
     public async Task<byte[]> Execute(DateOnly month)
     {
+        var expenses = await _filterUseCase.Execute(month);
+
+        if(expenses.Count == 0)
+        {
+            return new byte[0];
+        }
+
         var workBook = new XLWorkbook();
 
         workBook.Author = "Vitooooooooooor";
