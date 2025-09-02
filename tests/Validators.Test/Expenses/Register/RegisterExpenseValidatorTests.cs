@@ -1,4 +1,4 @@
-﻿using CashFlow.Application.UseCases.Expenses.Register;
+﻿using CashFlow.Application.UseCases.Expenses;
 using CashFlow.Exception;
 using CommomTestUtilities.Requests;
 using Shouldly;
@@ -11,7 +11,7 @@ public class RegisterExpenseValidatorTests
     public void Success()
     {
         // Arrange
-        var validator = new RegisterExpenseValidator();
+        var validator = new ExpenseValidator();
         var request = RequestRegisterExpenseJsonBuilder.Build();
        
         // Act
@@ -25,7 +25,7 @@ public class RegisterExpenseValidatorTests
     public void ErrorTitleIsEmpty()
     {
         // Arrange
-        var validator = new RegisterExpenseValidator();
+        var validator = new ExpenseValidator();
         var request = RequestRegisterExpenseJsonBuilder.Build();
         request.Title = string.Empty;
 
