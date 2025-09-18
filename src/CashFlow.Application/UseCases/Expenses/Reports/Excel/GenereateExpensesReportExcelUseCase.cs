@@ -8,6 +8,7 @@ namespace CashFlow.Application.UseCases.Expenses.Reports.Excel;
 
 public class GenereateExpensesReportExcelUseCase : IGenereateExpensesReportExcelUseCase
 {
+    private const string CURRENCY_SYMBOL = "R$";
     private readonly IFilterExpensesByMonthUseCase _filterUseCase;
 
     public GenereateExpensesReportExcelUseCase(IFilterExpensesByMonthUseCase filterUseCase)
@@ -30,8 +31,6 @@ public class GenereateExpensesReportExcelUseCase : IGenereateExpensesReportExcel
         workBook.Style.Font.FontSize = 12;
         workBook.Style.Font.FontName = "ROBOTO";
 
-        month.ToString("");
-
         var worksheet = workBook.Worksheets.Add(month.ToString("Y"));
 
         InsertHeader(worksheet);
@@ -42,12 +41,16 @@ public class GenereateExpensesReportExcelUseCase : IGenereateExpensesReportExcel
             worksheet.Cell($"A{raw}").Value = expense.Title;
             worksheet.Cell($"B{raw}").Value = expense.Date;
             worksheet.Cell($"C{raw}").Value = ConvertPaymentType(expense.PaymentType);
-            worksheet.Cell($"D{raw}").Value = expense.Amount;
-            worksheet.Cell($"E{raw}").Value = expense.Description;
 
+            worksheet.Cell($"D{raw}").Value = expense.Amount;
+            worksheet.Cell($"D{raw}").Style.NumberFormat.Format = $"-{CURRENCY_SYMBOL} #,##0.00";
+
+            worksheet.Cell($"E{raw}").Value = expense.Description;
 
             raw++;
         }
+
+        worksheet.Columns().AdjustToContents();
 
         var file = new MemoryStream();
         workBook.SaveAs(file);
