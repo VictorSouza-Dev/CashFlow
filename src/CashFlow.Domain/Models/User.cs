@@ -8,7 +8,4 @@ public class User
     public string Password { get; set; } = string.Empty;
     public Guid UserIdentifer { get; set; }
     public string Role { get; set; } = string.Empty;
-
-    public long UserId { get; set; }
-    public User user { get; set; } = default!;
 }

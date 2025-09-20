@@ -147,4 +147,7 @@
   <data name="INVALID_PASSWORD" xml:space="preserve">
     <value>Sua senha deve ter no minimo 8 caracteres, contendo pelo menos uma letra uma maiúscula, uma letra minúscula...</value>
   </data>
+  <data name="EMAIL_ALREADY_REGISTERED" xml:space="preserve">
+    <value>Este e-mail já está em uso</value>
+  </data>
 </root>
