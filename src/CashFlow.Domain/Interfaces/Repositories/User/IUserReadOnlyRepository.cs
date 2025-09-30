@@ -3,4 +3,5 @@
 public interface IUserReadOnlyRepository
 {
     Task<bool> ExistActiveUserWithEmail(string email);
+    Task<Models.User?> GetUserByEmail(string email);
 }

@@ -24,7 +24,7 @@ public class RegisterExpenseUseCase : IRegisterExpenseUseCase
     }
     public async Task<ResponseRegisterExpenseJson> Execute(RequestExpenseJson request)
     {
-        Validate(request);
+        Validate(request); 
 
         var entity = _mapper.Map<Expense>(request);
 
