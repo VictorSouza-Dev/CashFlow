@@ -19,32 +19,27 @@ public class PasswordValidator<T> : PropertyValidator<T, string>
     {
         if (string.IsNullOrEmpty(password))
         {
-            context.MessageFormatter.AppendArgument(ERROR_MESSAGE_KEY, ResourceErrorMessages.INVALID_PASSWORD);
-            return false;
+            return Fail(context, ResourceErrorMessages.INVALID_PASSWORD);
         }
 
         if(password.Length < 8)
         {
-            context.MessageFormatter.AppendArgument(ERROR_MESSAGE_KEY, ResourceErrorMessages.INVALID_PASSWORD);
-            return false;
+            return Fail(context, ResourceErrorMessages.INVALID_PASSWORD);
         }
 
         if(Regex.IsMatch(password, @"[A-Z]+") == false)
         {
-            context.MessageFormatter.AppendArgument(ERROR_MESSAGE_KEY, ResourceErrorMessages.INVALID_PASSWORD);
-            return false;
+            return Fail(context, ResourceErrorMessages.INVALID_PASSWORD);
         }
 
         if(Regex.IsMatch(password, @"[a-z]+") == false)
         {
-            context.MessageFormatter.AppendArgument(ERROR_MESSAGE_KEY, ResourceErrorMessages.INVALID_PASSWORD);
-            return false;
+            return Fail(context, ResourceErrorMessages.INVALID_PASSWORD);
         }
 
         if (Regex.IsMatch(password, @"[0-9]+") == false)
         {
-            context.MessageFormatter.AppendArgument(ERROR_MESSAGE_KEY, ResourceErrorMessages.INVALID_PASSWORD);
-            return false;
+            return Fail(context, ResourceErrorMessages.INVALID_PASSWORD);
         }   
 
         if (Regex.IsMatch(password, @"[\!\?\*\.]+") == false)
@@ -54,5 +49,11 @@ public class PasswordValidator<T> : PropertyValidator<T, string>
         }
 
         return true;
+    }
+
+    private bool Fail(ValidationContext<T> context, string message)
+    {
+        context.MessageFormatter.AppendArgument(ERROR_MESSAGE_KEY, message);
+        return false;
     }
 }

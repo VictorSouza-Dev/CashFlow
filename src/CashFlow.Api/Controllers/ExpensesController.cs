@@ -5,26 +5,16 @@ using CashFlow.Application.UseCases.Expenses.Register;
 using CashFlow.Application.UseCases.Expenses.Update;
 using CashFlow.Communication.Request;
 using CashFlow.Communication.Responses;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CashFlow.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class ExpensesController : ControllerBase
 {
-    [HttpPost]
-    [ProducesResponseType(typeof(ResponseRegisterExpenseJson), StatusCodes.Status201Created)]
-    [ProducesResponseType(typeof(ResponseRegisterExpenseJson), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Register(
-        [FromServices] IRegisterExpenseUseCase useCase,
-        [FromBody] RequestExpenseJson request)
-    {
-        var response = await useCase.Execute(request);
-
-        return Created(string.Empty, response);
-    }
-
     [HttpGet]
     [ProducesResponseType(typeof(List<ResponseExpensesJson>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -37,6 +27,7 @@ public class ExpensesController : ControllerBase
 
         return NoContent();
     }
+
     [HttpGet]
     [Route("{id}")]
     [ProducesResponseType(typeof(ResponseExpenseJson), StatusCodes.Status200OK)]
@@ -50,6 +41,19 @@ public class ExpensesController : ControllerBase
         return Ok(response);
 
     }
+
+    [HttpPost]
+    [ProducesResponseType(typeof(ResponseRegisterExpenseJson), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(ResponseRegisterExpenseJson), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Register(
+        [FromServices] IRegisterExpenseUseCase useCase,
+        [FromBody] RequestExpenseJson request)
+    {
+        var response = await useCase.Execute(request);
+
+        return Created(string.Empty, response);
+    }
+
     [HttpDelete]
     [Route("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]

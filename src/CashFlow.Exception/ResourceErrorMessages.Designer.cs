@@ -70,6 +70,15 @@ namespace CashFlow.Exception {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a This email is already in use.
+        /// </summary>
+        public static string EMAIL_ALREADY_REGISTERED {
+            get {
+                return ResourceManager.GetString("EMAIL_ALREADY_REGISTERED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a The email cannot be empty
         ///.
         /// </summary>
@@ -86,6 +95,15 @@ namespace CashFlow.Exception {
         public static string EMAIL_INVALID {
             get {
                 return ResourceManager.GetString("EMAIL_INVALID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Password or/and email is invalid.
+        /// </summary>
+        public static string EMAIL_OR_PASSWORD_INVALID {
+            get {
+                return ResourceManager.GetString("EMAIL_OR_PASSWORD_INVALID", resourceCulture);
             }
         }
         
@@ -108,7 +126,7 @@ namespace CashFlow.Exception {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a Your password must be at least 8 characters long, containing at least one uppercase letter, one lowercase letter....
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Your password must be at least 8 characters long, including at least one uppercase letter, one lowercase letter, one number, and one special character..
         /// </summary>
         public static string INVALID_PASSWORD {
             get {
