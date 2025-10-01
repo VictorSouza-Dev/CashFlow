@@ -43,6 +43,4 @@ public class DoLoginUserCase : IDoLoginUserCase
             Token = _tokenGenerator.Generate(user)
         };
     }
-
-   
 }
